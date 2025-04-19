@@ -15,7 +15,7 @@
     },
     {
       "label": "View Other Apartments",
-      "menu": "apartment_selector.json"
+      "menu": "main_menu.json"
     }
   ]
 }
