@@ -1,0 +1,21 @@
+{
+  "video": "artwin_apt1.mp4",
+  "title": "Artwin Apartment Tour",
+  "scenes": [
+    { "label": "Entryway", "timestamp": 0 },
+    { "label": "Kitchen", "timestamp": 75 },
+    { "label": "Living Room", "timestamp": 130 },
+    { "label": "Bedroom", "timestamp": 200 },
+    { "label": "Bathroom", "timestamp": 260 }
+  ],
+  "endOptions": [
+    {
+      "label": "Go to Office",
+      "nextVideo": "office_tour.mp4"
+    },
+    {
+      "label": "View Other Apartments",
+      "menu": "apartment_selector.json"
+    }
+  ]
+}

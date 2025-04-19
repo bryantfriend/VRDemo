@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>VR Apartment Tour</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="gui.js" defer></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- VIDEO ASSET -->
+      <a-assets>
+        <!-- Set src directly on video element -->
+        <video id="tourVideo" src="videos/artwin_apt1.mp4" autoplay loop muted crossorigin="anonymous" webkit-playsinline playsinline></video>
+      </a-assets>
+
+      <!-- 360 SPHERE -->
+      <a-videosphere src="#tourVideo"></a-videosphere>
+
+      <!-- CAMERA + CURSOR -->
+      <a-entity camera look-controls>
+        <a-entity cursor="fuse: false; rayOrigin: mouse"
+                  raycaster="objects: .clickable"
+                  position="0 0 -1"
+                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                  material="color: white; shader: flat">
+        </a-entity>
+      </a-entity>
+
+      <!-- CONTROLLER INTERACTION FOR VR HEADSETS -->
+      <a-entity laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+
+      <!-- FLOATING MENU -->
+      <a-entity id="ui-menu" position="0 -1.5 -3"></a-entity>
+    </a-scene>
+  </body>
+</html>
