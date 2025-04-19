@@ -1,0 +1,15 @@
+{
+  "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745034856/deck_nkpxzw.mp4",
+  "title": "Apartment Deck View",
+  "scenes": [
+    { "label": "Deck Entry", "timestamp": 0 },
+    { "label": "Mountain View", "timestamp": 60 },
+    { "label": "Sunset Seating", "timestamp": 120 }
+  ],
+  "endOptions": [
+    {
+      "label": "Return to Tour",
+      "nextVideo": "artwin_apt1.mp4"
+    }
+  ]
+}
