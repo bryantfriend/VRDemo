@@ -1,0 +1,13 @@
+{
+  "backgroundVideo": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745038804/The_Beauty_Of_Kyrgyzstan_By_Drone_In_4K_Kirgistan_Drohnenflug_Kyrgyzstan_Aerial_Reisetipps_iv3sck.mp4",
+  "menu": [
+    {
+      "label": "Artwin Apartment Tour",
+      "json": "apartment1.json"
+    },
+    {
+      "label": "Deck View",
+      "json": "deck.json"
+    }
+  ]
+}
