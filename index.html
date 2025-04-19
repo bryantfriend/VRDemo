@@ -1,21 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>VR Apartment Tour</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="gui.js" defer></script>
   </head>
   <body>
     <a-scene>
-      <!-- VIDEO ASSET -->
+
+      <!-- ASSETS -->
       <a-assets>
-        <!-- Empty video element, source set by gui.js -->
-        <video id="tourVideo" autoplay loop muted crossorigin="anonymous" webkit-playsinline playsinline></video>
+        <!-- Main menu background video (flat, not 360) -->
+        <video id="menuBackground"
+               autoplay loop muted crossorigin="anonymous"
+               playsinline webkit-playsinline></video>
+
+        <!-- Main tour video (loaded dynamically) -->
+        <video id="tourVideo"
+               muted crossorigin="anonymous"
+               playsinline webkit-playsinline></video>
+
+        <!-- Font for polished text -->
+        <a-asset-item id="exo2bold" src="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-asset-item>
       </a-assets>
 
-      <!-- 360 SPHERE -->
-      <a-videosphere src="#tourVideo"></a-videosphere>
+      <!-- MENU BACKGROUND PLANE (flat video behind menu buttons) -->
+      <a-plane id="menu-background-plane"
+               src="#menuBackground"
+               position="0 1.6 -10"
+               width="16"
+               height="9"
+               material="shader: flat; transparent: true; opacity: 1"
+               rotation="0 0 0">
+      </a-plane>
+
+      <!-- MAIN TOUR 360 SPHERE -->
+      <a-videosphere id="videosphere" src="#tourVideo" visible="true"></a-videosphere>
 
       <!-- CAMERA + CURSOR -->
       <a-entity camera look-controls>
@@ -30,8 +51,9 @@
       <!-- CONTROLLER INTERACTION FOR VR HEADSETS -->
       <a-entity laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
 
-      <!-- FLOATING MENU -->
+      <!-- FLOATING MENU UI -->
       <a-entity id="ui-menu" position="0 -1.5 -3"></a-entity>
+
     </a-scene>
   </body>
 </html>
