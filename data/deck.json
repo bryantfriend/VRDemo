@@ -10,6 +10,10 @@
     {
       "label": "Return to Tour",
       "nextVideo": "artwin_apt1.mp4"
+    },
+    {
+      "label": "Go to main menu",
+      "menu": "main_menu.json"
     }
   ]
 }
