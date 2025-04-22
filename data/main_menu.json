@@ -4,10 +4,12 @@
     {
       "label": "Artwin Apartment Tour",
       "json": "apartment1.json"
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745032748/artwin_apt1_d3jtv3.mp4"
     },
     {
       "label": "Deck View",
-      "json": "deck.json"
+      "json": "deck.json",
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745034856/deck_nkpxzw.mp4"
     }
   ]
 }
