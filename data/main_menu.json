@@ -3,8 +3,8 @@
   "menu": [
     {
       "label": "Artwin Apartment Tour",
-      "json": "apartment1.json"
-      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745213877/360_VR_Video_4K_Walking_Istanbul_Streets_in_ru5v0l.mp4",
+      "json": "apartment1.json",
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745213877/360_VR_Video_4K_Walking_Istanbul_Streets_in_ru5v0l.mp4"
     },
     {
       "label": "Deck View",
