@@ -9,11 +9,11 @@
   "endOptions": [
     {
       "label": "Return to Tour",
-      "nextVideo": "artwin_apt1.mp4"
+      "json": "apartment1.json"
     },
     {
       "label": "Go to main menu",
-      "menu": "main_menu.json"
+      "json": "main_menu.json"
     }
   ]
 }
