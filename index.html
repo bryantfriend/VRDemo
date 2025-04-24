@@ -10,9 +10,9 @@
         display: none;
       }
     </style>
+    <link rel="icon" href="data:,">
   </head>
   <body>
-    <!-- Hidden elements used for generating thumbnails -->
     <video id="hiddenVideo" muted crossorigin="anonymous" playsinline></video>
     <canvas id="thumbnailCanvas" width="320" height="180"></canvas>
 
@@ -28,8 +28,8 @@
         <a-asset-item id="exo2bold" src="https://cdn.aframe.io/fonts/Exo2Bold.fnt"></a-asset-item>
       </a-assets>
 
-      <!-- 360 SKY BACKGROUND -->
-      <a-sky src="#sky360" rotation="0 -90 0"></a-sky>
+      <!-- BACKGROUND SKY IMAGE (restored) -->
+      <a-sky id="scene-sky" id="scene-sky" src="#sky360" rotation="0 -90 0"></a-sky>
 
       <!-- LIGHTING -->
       <a-entity light="type: ambient; color: #ccc"></a-entity>
@@ -38,19 +38,20 @@
       <!-- FLOOR -->
       <a-plane position="0 0 -4" rotation="-90 0 0" width="20" height="20" color="#666" shadow></a-plane>
 
-      <!-- FLAT VIDEO SCREEN -->
+      <!-- FLAT VIDEO SCREEN FOR MENU -->
       <a-plane 
         id="menu-video-screen"
         position="0 2 -4.5"
-        width="5"
-        height="2.8"
-        material="shader: flat; src: #menuBackground; side: double">
+        width="8"
+        height="4.5"
+        visible="false"
+        material="shader: flat; src: #menuBackground; side: double; transparent: true; opacity: 1">
       </a-plane>
 
-      <!-- MAIN TOUR 360 SPHERE -->
+      <!-- 360 VIDEO SPHERE -->
       <a-videosphere id="videosphere" src="#tourVideo" visible="false"></a-videosphere>
 
-      <!-- CAMERA + CURSOR -->
+      <!-- CAMERA & CURSOR -->
       <a-entity camera look-controls>
         <a-entity cursor="fuse: false; rayOrigin: mouse"
                   raycaster="objects: .clickable"
@@ -60,13 +61,23 @@
         </a-entity>
       </a-entity>
 
-      <!-- VR CONTROLLER SUPPORT -->
+      <!-- VR CONTROLLER -->
       <a-entity laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
 
-      <!-- UI MENU ATTACH POINT -->
+      <!-- BUTTON MENU ROOT -->
       <a-entity id="ui-menu" position="0 -1.5 -3"></a-entity>
 
     </a-scene>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const screen = document.getElementById("menu-video-screen");
+        if (screen) {
+          screen.addEventListener("materialtextureloaded", () => {
+            screen.setAttribute("visible", "true");
+          });
+        }
+      });
+    </script>
   </body>
 </html>
