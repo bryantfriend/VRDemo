@@ -1,95 +1,93 @@
+import { loadSceneConfig } from './sceneManager.js';
 import { createButton } from './utils.js';
-import { clearMenu } from './utils.js';
-const menuEl = document.getElementById("ui-menu");
-const videoEl = document.getElementById("tourVideo");
-import { loadMainMenu, loadVideoData } from './loader.js';
 
 export function setupBasicControls(config) {
+  const menuEl = document.getElementById("ui-menu");
   const group = document.createElement("a-entity");
-  group.setAttribute("id", "control-menu");
+  group.setAttribute("position", "0 -0.6 -2.5");
 
-  const radius = 1; // arc radius
-  const centerY = -0.2; // vertical level
-  const centerZ = -2.5;
+  const videoEl = document.getElementById("tourVideo");
 
   const buttons = [
-    { label: "Play/Pause", angle: 90, action: () => videoEl.paused ? videoEl.play() : videoEl.pause() },
-    { label: "<< 10 sec", angle: 150, action: () => videoEl.currentTime -= 10 },
-    { label: ">> 10 sec", angle: 30, action: () => videoEl.currentTime += 10 },
-    { label: "Restart", angle: 270, action: () => videoEl.currentTime = 0 }
+    { label: "▶ Play/Pause", action: () => videoEl.paused ? videoEl.play() : videoEl.pause() },
+    { label: "⏪ Rewind 10s", action: () => videoEl.currentTime -= 10 },
+    { label: "⏩ Forward 10s", action: () => videoEl.currentTime += 10 },
+    { label: "⏮ Restart", action: () => videoEl.currentTime = 0 }
   ];
 
-  buttons.forEach(btn => {
-    const rad = btn.angle * Math.PI / 180;
-    const x = radius * Math.cos(rad);
-    const y = centerY;
-    const z = centerZ + radius * Math.sin(rad);
-    const el = createButton(btn.label, `${x} ${y} ${z}`, btn.action);
-    group.appendChild(el);
+  buttons.forEach((btn, i) => {
+    const x = (i - 1.5) * 2;
+    const button = createButton(btn.label, `${x} 0 0`, btn.action);
+    group.appendChild(button);
   });
 
   menuEl.appendChild(group);
 }
 
-
 export function setupSceneButtons(config) {
-  if (!config.scenes) return;
+  if (!config.scenes || config.scenes.length === 0) {
+    console.log("⚠️ No scene buttons to add.");
+    return;
+  }
 
+  const menuEl = document.getElementById("ui-menu");
   const group = document.createElement("a-entity");
-  group.setAttribute("position", "0 -1.5 -3");
+  group.setAttribute("position", "0 0.6 -2.5");
+
+  const videoEl = document.getElementById("tourVideo");
 
   config.scenes.forEach((scene, i) => {
-    const x = (i - config.scenes.length / 2) * 1.5;
-    const el = createButton(scene.label, `${x} 0 0`, () => {
+    const x = (i - (config.scenes.length - 1) / 2) * 1.6;
+    const button = createButton(scene.label, `${x} 0 0`, () => {
+      console.log(`⏩ Jumping to scene: ${scene.label} at ${scene.timestamp}s`);
       videoEl.currentTime = scene.timestamp;
     });
-    group.appendChild(el);
+    group.appendChild(button);
   });
 
   menuEl.appendChild(group);
 }
 
 export function setupEndOptions(config) {
-  const videoEl = document.getElementById("tourVideo");
+  if (!config.endOptions || config.endOptions.length === 0) {
+    console.log("⚠️ No endOptions found in config.");
+    return;
+  }
+
   const menuEl = document.getElementById("ui-menu");
+  const group = document.createElement("a-entity");
+  group.setAttribute("position", "0 -1.5 -2.3");
 
-  if (!config.endOptions) return;
+  config.endOptions.forEach((option, i) => {
+    const x = (i - (config.endOptions.length - 1) / 2) * 2.2;
+    const label = option.label;
 
-  videoEl.addEventListener("ended", () => {
-    videoEl.pause();
+    console.log(`🧱 Creating endOption button: ${label} at x=${x}`);
 
-    const group = document.createElement("a-entity");
-    group.setAttribute("position", "0 1 -2.5");
+    const button = document.createElement("a-entity");
+    button.setAttribute("geometry", "primitive: plane; height: 0.4; width: 1.6");
+    button.setAttribute("material", "color: #444; opacity: 0.9; shader: flat; transparent: true");
+    button.setAttribute("text", `value: ${label}; align: center; color: white; width: 2.5; font: exo2bold`);
+    button.setAttribute("position", `${x} 0 0`);
+    button.setAttribute("class", "clickable");
+    button.setAttribute("visible", "true");
 
-    config.endOptions.forEach((option, i) => {
-      const y = -i * 0.6;
-      const btn = createButton(option.label, `0 ${y} 0`, async () => {
-        clearMenu();
-
-        if (option.nextVideo) {
-          // Load video and corresponding JSON config
-          const jsonName = option.nextVideo.split('/').pop().replace('.mp4', '.json');
-          const jsonPath = `data/${jsonName}`;
-
-          const videoEl = document.getElementById("tourVideo");
-          videoEl.setAttribute("src", option.nextVideo);
-          videoEl.load();
-          videoEl.play();
-
-          const res = await fetch(jsonPath);
-          const cfg = await res.json();
-          setupBasicControls(cfg);
-          setupSceneButtons(cfg);
-          setupEndOptions(cfg);
-
-        } else if (option.menu) {
-          loadMainMenu();
-        }
-      });
-
-      group.appendChild(btn);
+    button.addEventListener("click", () => {
+      console.log("🟢 Clicked endOption:", label);
+      if (option.menu) {
+        console.log("🔁 Loading main menu...");
+        loadSceneConfig("data/main_menu.json");
+      } else if (option.json) {
+        const path = "data/" + option.json;
+        console.log("🎬 Loading video JSON from:", path);
+        loadSceneConfig(path);
+      } else {
+        console.warn("⚠️ Unrecognized endOption format:", option);
+      }
     });
 
-    menuEl.appendChild(group);
+    group.appendChild(button);
   });
+
+  menuEl.appendChild(group);
 }
