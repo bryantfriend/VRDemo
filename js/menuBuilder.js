@@ -1,7 +1,7 @@
 import { generateThumbnail } from './thumbnails.js';
 import { createButton } from './utils.js';
 import { fadeOutBackground } from './transitions.js';
-import { loadVideoData } from './loader.js';
+import { loadSceneConfig } from './sceneManager.js';
 
 export function buildMenu(items) {
   const menuEl = document.getElementById("ui-menu");
@@ -14,9 +14,11 @@ export function buildMenu(items) {
     const posStr = `${x} 0 0`;
 
     console.log(`🔹 Creating button for: ${item.label} at position ${posStr}`);
+
     const btn = createButton(item.label, posStr, () => {
       fadeOutBackground();
-      loadVideoData("data/" + item.json);
+      // ✅ Use loadSceneConfig instead of the removed loadVideoData
+      loadSceneConfig("data/" + item.json);
     });
 
     btn.setAttribute("material", "color: #111; opacity: 0.85; shader: flat; transparent: true");
