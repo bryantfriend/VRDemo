@@ -26,12 +26,12 @@ export function enterMainMenuMode(config) {
   const sphere = document.getElementById("videosphere");
 
   if (sphere) sphere.setAttribute("visible", false);
-  if (screen) screen.setAttribute("visible", true);
-if (sky) {
-  sky.setAttribute("src", "#sky360");
-  sky.setAttribute("visible", true);
-}
+  if (screen) screen.setAttribute("visible", false); // hide initially
 
+  if (sky) {
+    sky.setAttribute("src", "#sky360");
+    sky.setAttribute("visible", true);
+  }
 
   if (tourVideo) {
     tourVideo.pause();
@@ -42,13 +42,18 @@ if (sky) {
     menuVideo.setAttribute("src", config.backgroundVideo);
     menuVideo.load();
     menuVideo.muted = true;
-    menuVideo.play().catch(err => {
+
+    // ✅ Show screen only after video starts playing
+    menuVideo.play().then(() => {
+      if (screen) screen.setAttribute("visible", true);
+    }).catch(err => {
       console.warn("🚫 Autoplay blocked for menu video:", err);
     });
   }
 
   buildMenu(config.menu);
 }
+
 
 export function enterVideoSceneMode(config) {
   console.log("🎥 Entering video scene:", config.video);
