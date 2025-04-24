@@ -11,11 +11,11 @@
   "endOptions": [
     {
       "label": "Go to the deck",
-      "nextVideo": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745034856/deck_nkpxzw.mp4"
+      "json": "deck.json"
     },
     {
-      "label": "View Other Apartments",
-      "menu": "main_menu.json"
+      "label": "Go to main menu",
+      "json": "main_menu.json"
     }
   ]
 }
