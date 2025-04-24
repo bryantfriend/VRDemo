@@ -26,7 +26,7 @@ export function enterMainMenuMode(config) {
   const sphere = document.getElementById("videosphere");
 
   if (sphere) sphere.setAttribute("visible", false);
-  if (screen) screen.setAttribute("visible", false); // hide initially
+  if (screen) screen.setAttribute("visible", false); // Hide first to prevent gray box
 
   if (sky) {
     sky.setAttribute("src", "#sky360");
@@ -43,17 +43,18 @@ export function enterMainMenuMode(config) {
     menuVideo.load();
     menuVideo.muted = true;
 
-    // ✅ Show screen only after video starts playing
+    // ✅ Only show screen after video starts playing
     menuVideo.play().then(() => {
+      console.log("✅ Menu video playing — showing screen");
       if (screen) screen.setAttribute("visible", true);
     }).catch(err => {
-      console.warn("🚫 Autoplay blocked for menu video:", err);
+      console.warn("🚫 Autoplay blocked — screen stays hidden", err);
+      if (screen) screen.setAttribute("visible", false); // Don't show gray box
     });
   }
 
   buildMenu(config.menu);
 }
-
 
 export function enterVideoSceneMode(config) {
   console.log("🎥 Entering video scene:", config.video);
@@ -72,14 +73,14 @@ export function enterVideoSceneMode(config) {
 
   if (screen) screen.setAttribute("visible", false);
   if (sky) sky.setAttribute("visible", false);
-  if (sphere) sphere.setAttribute("visible", false); // hide initially
+  if (sphere) sphere.setAttribute("visible", false); // Hide initially
 
   videoEl.setAttribute("src", config.video);
   videoEl.load();
   videoEl.muted = false;
 
   videoEl.addEventListener("loadedmetadata", () => {
-    sphere.setAttribute("visible", true); // only show when ready
+    sphere.setAttribute("visible", true); // Only show when video is ready
     videoEl.play();
   }, { once: true });
 
