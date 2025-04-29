@@ -1,5 +1,7 @@
-import { loadSceneConfig } from './sceneManager.js';
+
 import { createButton } from './utils.js';
+import { createCircleButton } from './utils.js';
+import { loadSceneConfig } from './sceneManager.js';
 
 export function setupBasicControls(config) {
   const menuEl = document.getElementById("ui-menu");
@@ -48,6 +50,92 @@ export function setupSceneButtons(config) {
   menuEl.appendChild(group);
 }
 
+export function setupModernControls(config) {
+  const camera = document.querySelector("[camera]"); // Attach to camera
+
+  const container = document.createElement("a-entity");
+  container.setAttribute("position", "0 -0.8 -1.2"); // Lower and forward
+  container.setAttribute("class", "hud-group"); // ✅ Mark this so we can safely remove later
+
+  const videoEl = document.getElementById("tourVideo");
+
+  // 🔹 Top row: scene buttons
+  const sceneButtonsGroup = document.createElement("a-entity");
+  sceneButtonsGroup.setAttribute("position", "0 0.3 0"); // Slightly above main row
+
+  const scenes = config?.scenes || [];
+  scenes.forEach((scene, i) => {
+    const x = (i - (scenes.length - 1) / 2) * 0.5;
+    const button = createCircleButton(scene.label, `${x} 0 0.01`, () => {
+      console.log(`⏩ Jumping to scene: ${scene.label} at ${scene.timestamp}s`);
+      videoEl.currentTime = scene.timestamp;
+      resetAutoHideTimer();
+    }, 0.14);
+    sceneButtonsGroup.appendChild(button);
+  });
+
+  container.appendChild(sceneButtonsGroup);
+
+  // 🔹 Bottom row: Pause, Restart, Menu
+  const mainControlsGroup = document.createElement("a-entity");
+  mainControlsGroup.setAttribute("position", "0 0 0");
+
+  const mainButtons = [
+    {
+      label: "<<",
+      action: () => {
+        videoEl.currentTime = 0;
+        resetAutoHideTimer();
+      }
+    },
+    {
+      label: "||",
+      action: () => {
+        if (videoEl.paused) videoEl.play();
+        else videoEl.pause();
+        resetAutoHideTimer();
+      }
+    },
+    {
+      label: "Menu",
+      action: () => {
+        loadSceneConfig("data/main_menu.json");
+      }
+    }
+  ];
+
+  mainButtons.forEach((btn, i) => {
+    const x = (i - (mainButtons.length - 1) / 2) * 0.8;
+    const button = createCircleButton(btn.label, `${x} 0 0.01`, btn.action, 0.14);
+    mainControlsGroup.appendChild(button);
+  });
+
+  container.appendChild(mainControlsGroup);
+  camera.appendChild(container); // ✅ Attach to camera, but only the HUD group
+
+  // 🔥 Auto-hide logic
+  let autoHideTimer;
+
+  function resetAutoHideTimer() {
+    if (autoHideTimer) clearTimeout(autoHideTimer);
+    sceneButtonsGroup.setAttribute("visible", true);
+
+    autoHideTimer = setTimeout(() => {
+      sceneButtonsGroup.setAttribute("visible", false);
+    }, 5000);
+  }
+
+  resetAutoHideTimer();
+
+  // 👂 Show scene buttons again on mouse move
+  window.addEventListener("mousemove", () => {
+    resetAutoHideTimer();
+  });
+}
+
+
+
+
 export function setupEndOptions(config) {
   if (!config.endOptions || config.endOptions.length === 0) {
     console.log("⚠️ No endOptions found in config.");
@@ -76,11 +164,11 @@ export function setupEndOptions(config) {
       console.log("🟢 Clicked endOption:", label);
       if (option.menu) {
         console.log("🔁 Loading main menu...");
-        loadSceneConfig("data/main_menu.json");
+        loadMainMenu(); // ✅ Correct way to load the menu
       } else if (option.json) {
         const path = "data/" + option.json;
         console.log("🎬 Loading video JSON from:", path);
-        loadSceneConfig(path);
+        loadVideoData(path);
       } else {
         console.warn("⚠️ Unrecognized endOption format:", option);
       }
