@@ -2,14 +2,29 @@
   "backgroundVideo": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745038804/The_Beauty_Of_Kyrgyzstan_By_Drone_In_4K_Kirgistan_Drohnenflug_Kyrgyzstan_Aerial_Reisetipps_iv3sck.mp4",
   "menu": [
     {
-      "label": "Artwin Apartment Tour",
+      "label": "Teleport",
       "json": "apartment1.json",
-      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745213877/360_VR_Video_4K_Walking_Istanbul_Streets_in_ru5v0l.mp4"
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745032748/artwin_apt1_d3jtv3.mp4"
     },
     {
       "label": "Deck View",
-      "json": "deck.json",
-      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745034856/deck_nkpxzw.mp4"
+      "json": "deckview.json",
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745032748/artwin_deckview_z9nmbl.mp4"
+    },
+    {
+      "label": "Drone Flight",
+      "json": "droneflight.json",
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745032748/artwin_droneflight_rbjkkf.mp4"
+    },
+    {
+      "label": "Sunset Rooftop",
+      "json": "rooftop.json",
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745032748/artwin_rooftop_vkohku.mp4"
+    },
+    {
+      "label": "Yurt Camp",
+      "json": "yurtcamp.json",
+      "video": "https://res.cloudinary.com/dqttcfl5m/video/upload/v1745032748/artwin_yurtcamp_hfkfmb.mp4"
     }
   ]
 }
