@@ -54,14 +54,14 @@ export function setupModernControls(config) {
   const camera = document.querySelector("[camera]"); // Attach to camera
 
   const container = document.createElement("a-entity");
-  container.setAttribute("position", "0 -0.8 -1.2"); // Lower and forward
-  container.setAttribute("class", "hud-group"); // ✅ Mark this so we can safely remove later
+  container.setAttribute("position", "0 -0.2 -1.3"); // ✅ Raised for VR
+  container.setAttribute("class", "hud-group");      // ✅ Identifiable for cleanup
 
   const videoEl = document.getElementById("tourVideo");
 
   // 🔹 Top row: scene buttons
   const sceneButtonsGroup = document.createElement("a-entity");
-  sceneButtonsGroup.setAttribute("position", "0 0.3 0"); // Slightly above main row
+  sceneButtonsGroup.setAttribute("position", "0 0.25 0"); // ✅ Slightly above
 
   const scenes = config?.scenes || [];
   scenes.forEach((scene, i) => {
@@ -78,7 +78,7 @@ export function setupModernControls(config) {
 
   // 🔹 Bottom row: Pause, Restart, Menu
   const mainControlsGroup = document.createElement("a-entity");
-  mainControlsGroup.setAttribute("position", "0 0 0");
+  mainControlsGroup.setAttribute("position", "0 -0.05 0"); // ✅ Raised closer to top row
 
   const mainButtons = [
     {
@@ -111,9 +111,9 @@ export function setupModernControls(config) {
   });
 
   container.appendChild(mainControlsGroup);
-  camera.appendChild(container); // ✅ Attach to camera, but only the HUD group
+  camera.appendChild(container); // ✅ Add to camera so it floats with view
 
-  // 🔥 Auto-hide logic
+  // 🔥 Auto-hide logic for top row
   let autoHideTimer;
 
   function resetAutoHideTimer() {
@@ -127,7 +127,7 @@ export function setupModernControls(config) {
 
   resetAutoHideTimer();
 
-  // 👂 Show scene buttons again on mouse move
+  // 👂 Reset hide timer on any mouse movement
   window.addEventListener("mousemove", () => {
     resetAutoHideTimer();
   });
