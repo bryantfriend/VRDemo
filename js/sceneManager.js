@@ -32,6 +32,12 @@ export function enterMainMenuMode(config) {
 
   clearMenu();
 
+  const oldControls = document.getElementById("modern-controls");
+  if (oldControls) {
+    oldControls.parentNode.removeChild(oldControls);
+  }
+
+
   const menuVideo = document.getElementById("menuBackground");
   const tourVideo = document.getElementById("tourVideo");
   if (tourVideo) {
