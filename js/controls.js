@@ -51,25 +51,24 @@ export function setupSceneButtons(config) {
 }
 
 export function setupModernControls(config) {
-  const camera = document.querySelector("[camera]"); // Attach to camera
+  const uiMenu = document.getElementById("ui-menu");
 
   const container = document.createElement("a-entity");
-  container.setAttribute("position", "0 -0.2 -1.3"); // ✅ Raised for VR
-  container.setAttribute("class", "hud-group");      // ✅ Identifiable for cleanup
+  container.setAttribute("position", "0 -1.4 -2.5");
+  container.setAttribute("id", "modern-controls");
 
   const videoEl = document.getElementById("tourVideo");
 
   // 🔹 Top row: scene buttons
   const sceneButtonsGroup = document.createElement("a-entity");
-  sceneButtonsGroup.setAttribute("position", "0 0.25 0"); // ✅ Slightly above
+  sceneButtonsGroup.setAttribute("position", "0 0.4 0");
 
   const scenes = config?.scenes || [];
   scenes.forEach((scene, i) => {
-    const x = (i - (scenes.length - 1) / 2) * 0.5;
+    const x = (i - (scenes.length - 1) / 2) * 0.6;
     const button = createCircleButton(scene.label, `${x} 0 0.01`, () => {
       console.log(`⏩ Jumping to scene: ${scene.label} at ${scene.timestamp}s`);
       videoEl.currentTime = scene.timestamp;
-      resetAutoHideTimer();
     }, 0.14);
     sceneButtonsGroup.appendChild(button);
   });
@@ -78,14 +77,13 @@ export function setupModernControls(config) {
 
   // 🔹 Bottom row: Pause, Restart, Menu
   const mainControlsGroup = document.createElement("a-entity");
-  mainControlsGroup.setAttribute("position", "0 -0.05 0"); // ✅ Raised closer to top row
+  mainControlsGroup.setAttribute("position", "0 0 0");
 
   const mainButtons = [
     {
       label: "<<",
       action: () => {
         videoEl.currentTime = 0;
-        resetAutoHideTimer();
       }
     },
     {
@@ -93,7 +91,6 @@ export function setupModernControls(config) {
       action: () => {
         if (videoEl.paused) videoEl.play();
         else videoEl.pause();
-        resetAutoHideTimer();
       }
     },
     {
@@ -111,26 +108,7 @@ export function setupModernControls(config) {
   });
 
   container.appendChild(mainControlsGroup);
-  camera.appendChild(container); // ✅ Add to camera so it floats with view
-
-  // 🔥 Auto-hide logic for top row
-  let autoHideTimer;
-
-  function resetAutoHideTimer() {
-    if (autoHideTimer) clearTimeout(autoHideTimer);
-    sceneButtonsGroup.setAttribute("visible", true);
-
-    autoHideTimer = setTimeout(() => {
-      sceneButtonsGroup.setAttribute("visible", false);
-    }, 5000);
-  }
-
-  resetAutoHideTimer();
-
-  // 👂 Reset hide timer on any mouse movement
-  window.addEventListener("mousemove", () => {
-    resetAutoHideTimer();
-  });
+  uiMenu.appendChild(container); // ✅ Attach to fixed position in world
 }
 
 
